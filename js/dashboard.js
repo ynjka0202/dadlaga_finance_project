@@ -7,6 +7,25 @@ const txAmountInput = document.getElementById('tx-amount');
 const txDateInput = document.getElementById('tx-date');
 const txDescInput = document.getElementById('tx-desc');
 
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    // Хамгийн түрүүнд хэрэглэгч нэвтэрсэн эсэхийг шалгана
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (error || !user) {
+        // Хэрэв нэвтрээгүй байвал шууд нэвтрэх хуудас руу буцаана
+        window.location.href = 'index.html';
+        return;
+    }
+
+    // Хэрэглэгч нэвтэрсэн нь үнэн бол имэйлийг нь navbar дээр харуулна
+    document.getElementById('user-email').textContent = user.email;
+
+    await fetchTransactions(); 
+    // Доор бичих төсвийн жагсаалтыг шинэчлэх функцийг дуудна
+    if (typeof fetchBudgets === 'function') fetchBudgets();
+});
+
 transactionForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -44,7 +63,7 @@ transactionForm.addEventListener('submit', async (e) => {
     } else {
         alert("Гүйлгээ амжилттай бүртгэгдлээ");
         transactionForm.reset();
-        fetchTransactions(); // FIX 1: жагсаалт шинэчлэх
+        fetchTransactions();
     }
 });
 
@@ -109,4 +128,4 @@ function renderTransactions(transactions) {
     listContainer.innerHTML = htmlContent;
 }
 
-fetchTransactions(); // FIX 2: хуудас нээхэд жагсаалт татах
+fetchTransactions(); 
