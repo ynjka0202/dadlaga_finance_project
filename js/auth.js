@@ -14,8 +14,7 @@ btnRegister.addEventListener('click', async () => {
     if (!email || !password) {
         showMessage('Имэйл болон нууц үгээ гүйцэд оруулна уу', 'text-danger')
         return
-    }                                     // } дутуу байсан
-
+    }                                     
     if (password.length < 6) {
         showMessage('Нууц үг доод тал нь 6 тэмдэгт байх ёстой', 'text-danger')
         return
